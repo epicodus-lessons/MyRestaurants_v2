@@ -29,7 +29,7 @@ public class Restaurant {
         return  mWebsite;
     }
 
-    public double getRating() {
+    public int getRating() {
         return mRating;
     }
 
