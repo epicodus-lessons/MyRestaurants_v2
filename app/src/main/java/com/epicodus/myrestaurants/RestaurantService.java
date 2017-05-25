@@ -8,13 +8,17 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import okhttp3.Response;
+import android.util.Log;
+import org.json.JSONArray;
+
+
 
 
 public class RestaurantService {
     static String apiUrl = "http://138.197.214.133/api/v1/foodtruck";
 
-    public static void findRestaurants(String location, Callback callback){
-        Request request= new Request.Builder()
+    public static void findRestaurants(String location, Callback callback) {
+        Request request = new Request.Builder()
                 .url(apiUrl)
                 .build();
 
@@ -29,8 +33,9 @@ public class RestaurantService {
         try {
             String jsonData = response.body().string();
             if (response.isSuccessful()) {
-                JSONObject restaurantJSON = new JSONObject(jsonData);
-                for (int i = 0; i < restaurantJSON.length(); i++) {
+                JSONArray restaurantsJSON = new JSONArray(jsonData);
+                for (int i = 0; i < restaurantsJSON.length(); i++) {
+                    JSONObject restaurantJSON = restaurantsJSON.getJSONObject(i);
                     String name = restaurantJSON.getString("name");
                     double averageCost = restaurantJSON.getDouble("avgcost");
                     int rating = Integer.parseInt(restaurantJSON.getString("rating"));
@@ -38,19 +43,19 @@ public class RestaurantService {
                     String imageUrl = restaurantJSON.getString("image");
                     String foodType = restaurantJSON.getString("foodtype");
 
-
                     Restaurant restaurant = new Restaurant(name, averageCost, rating, website,
                             imageUrl, foodType);
                     restaurants.add(restaurant);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         return restaurants;
     }
 
 }
-

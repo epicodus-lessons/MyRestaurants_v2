@@ -67,13 +67,9 @@ public class RestaurantsActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    String jsonData = response.body().string();
-                    Log.v(TAG, jsonData);
-                    mRestaurants = restaurantService.processResults(response);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (response.isSuccessful()) {
+                    mRestaurants = restaurantService.processResults(response);
                 }
             }
         });
