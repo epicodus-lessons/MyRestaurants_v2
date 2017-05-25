@@ -67,10 +67,16 @@ public class RestaurantsActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                mRestaurants = restaurantService.processResults(response);
 
-                if (response.isSuccessful()) {
-                    mRestaurants = restaurantService.processResults(response);
-                }
+                RestaurantsActivity.this.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                    }
+
+                });
             }
         });
     }
