@@ -34,17 +34,6 @@ public class RestaurantsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurants);
         ButterKnife.bind(this);
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, restaurants);
-        mListView.setAdapter(adapter);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String restaurant = ((TextView)view).getText().toString();
-                Toast.makeText(RestaurantsActivity.this, restaurant, Toast.LENGTH_LONG).show();
-            }
-        });
-
         Intent intent = getIntent();
         String location = intent.getStringExtra("location");
 
@@ -76,6 +65,15 @@ public class RestaurantsActivity extends AppCompatActivity {
                         ArrayAdapter adapter = new ArrayAdapter(RestaurantsActivity.this,
                                 android.R.layout.simple_list_item_1, restaurantNames);
                         mListView.setAdapter(adapter);
+
+                        for (Restaurant restaurant : mRestaurants) {
+                            Log.d(TAG, "Name: " + restaurant.getName());
+                            Log.d(TAG, "Average Cost: " + restaurant.getAverageCost());
+                            Log.d(TAG, "Website: " + restaurant.getWebsite());
+                            Log.d(TAG, "Image url: " + restaurant.getImageUrl());
+                            Log.d(TAG, "Rating: " + restaurant.getRating());
+                            Log.d(TAG, "Food Type:" + restaurant.getFoodType());
+                        }
                     }
                 });
             }
