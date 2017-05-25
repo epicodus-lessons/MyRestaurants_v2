@@ -16,6 +16,8 @@ import okhttp3.Response;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import android.util.Log;
+import java.util.ArrayList;
+
 
 
 public class RestaurantsActivity extends AppCompatActivity {
@@ -23,6 +25,8 @@ public class RestaurantsActivity extends AppCompatActivity {
 
     @Bind(R.id.locationTextView) TextView mLocationTextView;
     @Bind(R.id.listView) ListView mListView;
+
+    public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
 
     private String[] restaurants = new String[] {"Sweet Hereafter", "Cricket", "Hawthorne Fish House", "Viking Soul Food",
             "Red Square", "Horse Brass", "Dick's Kitchen", "Taco Bell", "Me Kha Noodle Bar",
@@ -66,6 +70,7 @@ public class RestaurantsActivity extends AppCompatActivity {
                 try {
                     String jsonData = response.body().string();
                     Log.v(TAG, jsonData);
+                    mRestaurants = restaurantService.processResults(response);
 
                 } catch (IOException e) {
                     e.printStackTrace();
