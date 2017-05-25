@@ -9,11 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.io.IOException;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import android.util.Log;
+
 
 public class RestaurantsActivity extends AppCompatActivity {
+    public static final String TAG = RestaurantsActivity.class.getSimpleName();
+
     @Bind(R.id.locationTextView) TextView mLocationTextView;
     @Bind(R.id.listView) ListView mListView;
 
@@ -43,5 +50,28 @@ public class RestaurantsActivity extends AppCompatActivity {
 
         mLocationTextView.setText("Here are all the restaurants near: " + location);
     }
+
+    private void getRestaurants(String location) {
+        final RestaurantService restaurantService = new RestaurantService();
+        restaurantService.findRestaurants(location, new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String jsonData = response.body().string();
+                    Log.v(TAG, jsonData);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 }
 
