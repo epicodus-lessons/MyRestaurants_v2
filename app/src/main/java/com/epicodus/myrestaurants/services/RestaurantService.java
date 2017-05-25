@@ -1,4 +1,4 @@
-package com.epicodus.myrestaurants;
+package com.epicodus.myrestaurants.services;
 import okhttp3.Request;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -8,7 +8,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import okhttp3.Response;
-import android.util.Log;
+
+import com.epicodus.myrestaurants.models.Restaurant;
+
 import org.json.JSONArray;
 
 

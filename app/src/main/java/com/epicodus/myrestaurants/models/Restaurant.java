@@ -1,4 +1,4 @@
-package com.epicodus.myrestaurants;
+package com.epicodus.myrestaurants.models;
 
 public class Restaurant {
     private String mName;
