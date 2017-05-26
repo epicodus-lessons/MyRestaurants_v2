@@ -13,22 +13,18 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import android.util.Log;
-
+import com.epicodus.myrestaurants.adapters.RestaurantListAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import com.epicodus.myrestaurants.R;
 import com.epicodus.myrestaurants.models.Restaurant;
 import com.epicodus.myrestaurants.services.RestaurantService;
-
 import java.util.ArrayList;
 
 
-
 public class RestaurantsActivity extends AppCompatActivity {
-    public static final String TAG = RestaurantsActivity.class.getSimpleName();
-
-    @Bind(R.id.locationTextView) TextView mLocationTextView;
-    @Bind(R.id.listView) ListView mListView;
-
+    private RestaurantListAdapter mAdapter;
+    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
     public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
 
     @Override
@@ -40,7 +36,6 @@ public class RestaurantsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String location = intent.getStringExtra("location");
 
-        mLocationTextView.setText("Here are all the restaurants near: " + location);
         getRestaurants(location);
     }
 
@@ -61,22 +56,12 @@ public class RestaurantsActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
-                        String[] restaurantNames = new String[mRestaurants.size()];
-                        for (int i = 0; i < restaurantNames.length; i++) {
-                            restaurantNames[i] = mRestaurants.get(i).getName();
-                        }
-                        ArrayAdapter adapter = new ArrayAdapter(RestaurantsActivity.this,
-                                android.R.layout.simple_list_item_1, restaurantNames);
-                        mListView.setAdapter(adapter);
-
-                        for (Restaurant restaurant : mRestaurants) {
-                            Log.d(TAG, "Name: " + restaurant.getName());
-                            Log.d(TAG, "Average Cost: " + restaurant.getAverageCost());
-                            Log.d(TAG, "Website: " + restaurant.getWebsite());
-                            Log.d(TAG, "Image url: " + restaurant.getImageUrl());
-                            Log.d(TAG, "Rating: " + restaurant.getRating());
-                            Log.d(TAG, "Food Type:" + restaurant.getFoodType());
-                        }
+                        mAdapter = new RestaurantListAdapter(getApplicationContext(), mRestaurants);
+                        mRecyclerView.setAdapter(mAdapter);
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(RestaurantsActivity.this);
+                        mRecyclerView.setLayoutManager(layoutManager);
+                        mRecyclerView.setHasFixedSize(true);
                     }
                 });
             }
